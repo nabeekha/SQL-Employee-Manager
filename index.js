@@ -59,3 +59,22 @@ function init(){
     })
 }
 
+//set up functions for each option and do a new inquirer prompt in each 
+async function viewAllDepartments() {
+    const [departments] = await connection.promise().query('SELECT * FROM department')
+    console.table(departments)
+    init()
+}
+
+async function viewAllRoles() {
+    const [roles] = await connection.promise().query('SELECT * FROM role')
+    console.table(roles)
+    init()
+}
+
+async function viewAllEmployees() {
+    const [employees] = await connection.promise().query('SELECT * FROM employee')
+    console.table(employees)
+    init()
+}
+
