@@ -93,3 +93,38 @@ function addDept() {
         viewAllDepartments()
     })
 }
+
+//change to add role
+function addRole() {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Please enter a role to add'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Please enter a salary for the above role'
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'Select the department for the new role:',
+            choices: async()=> {
+                //fetch the list of departments
+                const [departments] = await connection.promise().query('SELECT * FROM department')
+                //map dept names to an array
+                return departments.map((department)=> ({
+                    name: department.name,
+                    value: department.id,
+                }))
+            }
+        }
+    ])
+    .then(async(data) => {
+        await connection.promise().query(`INSERT INTO role (title, salary, department_id) VALUES('${data.title}', '${data.salary}', '${data.department}')`)
+        viewAllRoles()
+    })
+}
