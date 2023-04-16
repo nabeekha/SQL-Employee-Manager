@@ -78,3 +78,18 @@ async function viewAllEmployees() {
     init()
 }
 
+//function to add departments
+function addDept() {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'department',
+            message: 'Please enter a department'
+        }
+    ])
+    .then(async(data) => {
+        await connection.promise().query(`INSERT INTO department (name) VALUES('${data.department}')`)
+        viewAllDepartments()
+    })
+}
