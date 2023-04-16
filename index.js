@@ -169,3 +169,32 @@ function addEmployee() {
     })
 }
 
+//change to update role
+function updateRole() {
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'roleId',
+          message: 'Please enter the ID of the role you want to update:',
+        },
+        {
+          type: 'input',
+          name: 'newTitle',
+          message: 'Please enter the new title for the role:',
+        },
+        {
+          type: 'input',
+          name: 'newSalary',
+          message: 'Please enter the new salary for the role:',
+        },
+      ])
+      .then(async (data) => {
+        await connection.promise().query(
+          `UPDATE role SET title = '${data.newTitle}', salary = '${data.newSalary}' WHERE id = ${data.roleId}`
+        );
+        viewAllRoles();
+      });
+  }
+
+init()
