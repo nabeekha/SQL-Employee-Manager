@@ -128,3 +128,44 @@ function addRole() {
         viewAllRoles()
     })
 }
+
+//change to add employee
+function addEmployee() {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: 'Please enter a first name for the employee'
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: 'Please enter a last name for the employee'
+        },
+        {
+            type: 'input',
+            name: 'roleID',
+            message: 'Please enter a role ID for the employee',
+            choices: async()=> {
+                //fetch the list of roles
+                const [roles] = await connection.promise().query('SELECT * FROM role')
+                //map dept names to an array
+                return roles.map((role)=> ({
+                    name: role.title,
+                    value: role.id,
+                }))
+            }
+        },
+        {
+            type: 'input',
+            name: 'managerID',
+            message: 'Please enter a manager for the employee',
+        },
+    ])
+    .then(async(data) => {
+        await connection.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES('${data.firstName}', '${data.lastName}', '${data.roleID}', '${data.managerID}')`)
+        viewAllEmployees()
+    })
+}
+
